@@ -4,7 +4,9 @@ Automation and monitoring tools for Meshtastic mesh radio networks.
 
 ## Overview
 
-This collection provides command-line utilities for managing Meshtastic networks using the Python CLI. Scripts are designed for production use with comprehensive error handling and detailed help documentation. **Run scripts with `--help` for detailed usage information.**
+This collection provides command-line utilities for managing Meshtastic networks using the Python CLI. Scripts are designed for production use with comprehensive error handling and detailed help documentation. 
+
+**Run scripts with `--help` for detailed usage information.**
 
 ## Available Scripts
 
