@@ -4,7 +4,7 @@ Automation and monitoring tools for Meshtastic mesh radio networks.
 
 ## Overview
 
-This collection provides command-line utilities for managing Meshtastic networks using the Python CLI. Scripts are designed for production use with comprehensive error handling and detailed help documentation.
+This collection provides command-line utilities for managing Meshtastic networks using the Python CLI. Scripts are designed for production use with comprehensive error handling and detailed help documentation. **Run scripts with `--help` for detailed usage information.**
 
 ## Available Scripts
 
@@ -18,8 +18,6 @@ Features:
 - Signal quality indicators for quick health assessment
 - Support for monitoring specific devices via serial port selection
 
-Run with `--help` for detailed usage information.
-
 ### message-logger.py
 
 Message archival system that captures all mesh network traffic.
@@ -29,8 +27,6 @@ Features:
 - Structured output format for parsing and analysis
 - Automatic daily log file rotation
 - Captures both text messages and telemetry data
-
-Run with `--help` for detailed usage information.
 
 ### emergency-broadcast.sh
 
@@ -42,8 +38,6 @@ Features:
 - Acknowledgment request support
 - Serial port specification for multi-radio setups
 
-Run with `--help` for detailed usage information.
-
 ### mesh-rollcall.sh
 
 Network health check tool that polls all known nodes for responsiveness.
@@ -53,8 +47,6 @@ Features:
 - Response rate calculation and reporting
 - Identification of offline or unresponsive nodes
 - Detailed status output with node names and identifiers
-
-Run with `--help` for detailed usage information.
 
 ### backup-all-radios.sh
 
@@ -66,8 +58,6 @@ Features:
 - Individual success/failure reporting per device
 - Centralized backup storage in dedicated directory
 
-Run with `--help` for detailed usage information.
-
 ### node-health-alert.py
 
 Continuous monitoring system for critical infrastructure nodes.
@@ -78,8 +68,6 @@ Features:
 - Signal quality degradation warnings
 - Offline node detection with alert generation
 - Rate-limited notifications to prevent alert fatigue
-
-Run with `--help` for detailed usage information.
 
 ## Requirements
 
@@ -170,8 +158,3 @@ Scripts can be scheduled via cron for periodic execution:
 ## License
 
 MIT License
-
-## Resources
-
-- Meshtastic Documentation: https://meshtastic.org/docs/
-- Meshtastic Python CLI: https://github.com/meshtastic/python
