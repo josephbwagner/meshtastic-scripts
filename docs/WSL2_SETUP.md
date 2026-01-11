@@ -457,13 +457,3 @@ Make executable:
 ```bash
 chmod +x ~/bin/mesh-test.sh
 ```
-
-## Version History
-
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0 | 2026-01-11 | Initial documentation |
-
----
-
-*Document maintained for Meshtastic CLI version 2.7.x on WSL2/Ubuntu*
