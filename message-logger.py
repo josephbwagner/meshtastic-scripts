@@ -101,9 +101,44 @@ class MessageLogger:
             print(f"Error: {e}", file=sys.stderr)
 
 def main():
-    parser = argparse.ArgumentParser(description="Log Meshtastic mesh messages")
-    parser.add_argument("--port", help="Serial port (e.g., /dev/ttyACM0)")
-    parser.add_argument("--logfile", help="Log file path (default: mesh-messages-YYYYMMDD.log)")
+    parser = argparse.ArgumentParser(
+        description="Meshtastic Message Logger",
+        epilog="""
+Examples:
+  %(prog)s
+    Log messages to default file (mesh-messages-YYYYMMDD.log)
+  
+  %(prog)s --logfile custom.log
+    Log to specific file
+  
+  %(prog)s --port /dev/ttyACM0
+    Connect to specific radio
+  
+  %(prog)s --port /dev/ttyACM0 --logfile /var/log/mesh.log
+    Specify both port and log file
+
+Log format:
+  [TIMESTAMP] FROM_NODE -> TO_NODE | MESSAGE_TEXT (metadata)
+
+The logger captures:
+  - Text messages between nodes
+  - Telemetry data broadcasts
+  - System events and notifications
+
+Logs are written to both console and file. Press Ctrl+C to stop logging.
+        """,
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    parser.add_argument(
+        "--port",
+        metavar="DEVICE",
+        help="serial port to connect to (e.g., /dev/ttyACM0). Auto-detects if not specified."
+    )
+    parser.add_argument(
+        "--logfile",
+        metavar="FILE",
+        help="path to log file. Default: mesh-messages-YYYYMMDD.log in current directory."
+    )
     args = parser.parse_args()
     
     logger = MessageLogger(port=args.port, logfile=args.logfile)

@@ -1,316 +1,177 @@
 # Meshtastic Scripts
 
-A collection of powerful automation and monitoring scripts for Meshtastic mesh radio networks.
+Automation and monitoring tools for Meshtastic mesh radio networks.
 
 ## Overview
 
-These scripts provide advanced capabilities for managing, monitoring, and automating Meshtastic mesh networks using the Python CLI.
+This collection provides command-line utilities for managing Meshtastic networks using the Python CLI. Scripts are designed for production use with comprehensive error handling and detailed help documentation.
 
-## Scripts
+## Available Scripts
 
-### 1. 📊 Mesh Monitor (`mesh-monitor.py`)
+### mesh-monitor.py
 
-Real-time dashboard showing all mesh nodes with SNR, battery levels, and activity.
+Real-time monitoring dashboard displaying mesh network health and node status.
 
-**Usage:**
-```bash
-./mesh-monitor.py
-./mesh-monitor.py --port /dev/ttyACM0
-```
+Features:
+- Live node statistics including SNR, battery levels, and hop counts
+- Automatic refresh with configurable intervals
+- Signal quality indicators for quick health assessment
+- Support for monitoring specific devices via serial port selection
 
-**Features:**
-- Live node count and statistics
-- SNR signal quality indicators
-- Battery level monitoring
-- Hop count display
-- Auto-refresh every 30 seconds
-- Color-coded signal quality
+Run with `--help` for detailed usage information.
 
-### 2. 📝 Message Logger (`message-logger.py`)
+### message-logger.py
 
-Logs all mesh messages to timestamped files for archival and analysis.
+Message archival system that captures all mesh network traffic.
 
-**Usage:**
-```bash
-./message-logger.py
-./message-logger.py --port /dev/ttyACM0
-./message-logger.py --logfile custom-log.txt
-```
+Features:
+- Timestamped logging of all messages and events
+- Structured output format for parsing and analysis
+- Automatic daily log file rotation
+- Captures both text messages and telemetry data
 
-**Features:**
-- Timestamps all messages
-- Logs sender, receiver, and message content
-- Records telemetry and system events
-- Automatically creates daily log files
-- Console + file output
+Run with `--help` for detailed usage information.
 
-### 3. 🚨 Emergency Broadcast (`emergency-broadcast.sh`)
+### emergency-broadcast.sh
 
-Send urgent messages to all mesh nodes with confirmation prompts.
+Broadcast urgent messages to all mesh nodes with safety confirmations.
 
-**Usage:**
-```bash
-./emergency-broadcast.sh "Meeting at 1500h"
-./emergency-broadcast.sh --urgent "Emergency alert"
-./emergency-broadcast.sh --ack --port /dev/ttyACM0 "Important message"
-```
+Features:
+- Interactive confirmation before transmission
+- Optional urgent message prefix for priority alerts
+- Acknowledgment request support
+- Serial port specification for multi-radio setups
 
-**Features:**
-- Confirmation prompt before sending
-- Optional URGENT prefix
-- Acknowledgment support
-- Color-coded output
+Run with `--help` for detailed usage information.
 
-### 4. 📡 Mesh Roll Call (`mesh-rollcall.sh`)
+### mesh-rollcall.sh
 
-Poll all known nodes to check which are online and responsive.
+Network health check tool that polls all known nodes for responsiveness.
 
-**Usage:**
-```bash
-./mesh-rollcall.sh
-./mesh-rollcall.sh --port /dev/ttyACM0
-```
+Features:
+- Systematic telemetry requests to all registered nodes
+- Response rate calculation and reporting
+- Identification of offline or unresponsive nodes
+- Detailed status output with node names and identifiers
 
-**Features:**
-- Requests telemetry from all nodes
-- Reports response/no-response status
-- Calculates response rate
-- Shows node names and IDs
-- Color-coded results
+Run with `--help` for detailed usage information.
 
-### 5. 💾 Backup All Radios (`backup-all-radios.sh`)
+### backup-all-radios.sh
 
-Automatically backup configurations from all connected Meshtastic devices.
+Automated configuration backup utility for all connected radios.
 
-**Usage:**
-```bash
-./backup-all-radios.sh
-```
+Features:
+- Automatic detection of connected Meshtastic devices
+- Timestamped backup files with descriptive naming
+- Individual success/failure reporting per device
+- Centralized backup storage in dedicated directory
 
-**Features:**
-- Auto-detects all connected radios
-- Creates timestamped backups
-- Uses friendly node names in filenames
-- Saves to `~/meshtastic-backups/`
-- Reports success/failure for each device
+Run with `--help` for detailed usage information.
 
-### 6. 🏥 Node Health Alerter (`node-health-alert.py`)
+### node-health-alert.py
 
-Monitor critical nodes for offline status, low battery, or poor signal quality.
+Continuous monitoring system for critical infrastructure nodes.
 
-**Usage:**
-```bash
-./node-health-alert.py --nodes !6984a7c8 !b2a70de4
-./node-health-alert.py --nodes !6984a7c8 --interval 600 --battery-threshold 25
-./node-health-alert.py --port /dev/ttyACM0 --nodes !6984a7c8 !b2a70de4
-```
+Features:
+- Configurable monitoring of specified critical nodes
+- Battery level alerts with adjustable thresholds
+- Signal quality degradation warnings
+- Offline node detection with alert generation
+- Rate-limited notifications to prevent alert fatigue
 
-**Features:**
-- Monitors specific critical nodes
-- Battery level alerts (default: <20%)
-- Signal quality warnings (SNR < -10dB)
-- Offline detection
-- Configurable check interval
-- Rate limiting (max 1 alert/hour per issue)
+Run with `--help` for detailed usage information.
 
 ## Requirements
 
-- Meshtastic CLI (standalone or via pip)
-- Python 3.6+ (for Python scripts)
-- Bash (for shell scripts)
-- Linux/WSL2/macOS environment
+- Meshtastic CLI (standalone binary or installed via pip)
+- Python 3.6 or later
+- Bash shell environment
+- Linux, WSL2, or macOS
 
 ## Installation
 
-1. Clone this repository:
-```bash
-cd ~/repos
-git clone <your-repo-url> meshtastic-scripts
-cd meshtastic-scripts
-```
+Clone the repository and make scripts executable:
 
-2. Ensure scripts are executable:
 ```bash
+git clone https://github.com/yourusername/meshtastic-scripts.git
+cd meshtastic-scripts
 chmod +x *.sh *.py
 ```
 
-3. Update `MESHTASTIC_CMD` path in scripts if needed:
-   - Default: `meshtastic` (assumes in PATH)
-   - Or: `${HOME}/meshtastic` (standalone binary)
-
 ## Configuration
 
-### Setting Meshtastic CLI Path
+Scripts default to using `meshtastic` command from PATH. If using a standalone binary or custom installation path, edit the `MESHTASTIC_CMD` variable at the top of each script.
 
-If your Meshtastic CLI is not in PATH, edit each script:
+All scripts support the `--help` flag for detailed usage information and available options.
 
-**For Python scripts:**
-```python
-MESHTASTIC_CMD = "/path/to/meshtastic"
-```
+## Usage
 
-**For Bash scripts:**
-```bash
-MESHTASTIC="${HOME}/meshtastic"
-```
-
-### Specifying Serial Port
-
-Most scripts support `--port` option:
-```bash
-./script-name.sh --port /dev/ttyACM0
-```
-
-Or set a default port by editing the script.
-
-## Common Use Cases
-
-### Daily Operations
+Run any script with the `--help` flag to see detailed documentation:
 
 ```bash
-# Morning: Check mesh health
+./mesh-monitor.py --help
+./message-logger.py --help
+./emergency-broadcast.sh --help
+./mesh-rollcall.sh --help
+./backup-all-radios.sh --help
+./node-health-alert.py --help
+```
+
+Most scripts support the `--port` option to specify a serial device when multiple radios are connected.
+
+## Common Workflows
+
+Monitor network health:
+```bash
 ./mesh-monitor.py
+```
 
-# Throughout day: Log all messages
-./message-logger.py &
+Log all network traffic:
+```bash
+./message-logger.py
+```
 
-# Evening: Backup configurations
+Backup all connected devices:
+```bash
 ./backup-all-radios.sh
 ```
 
-### Emergency Communications
-
+Check network responsiveness:
 ```bash
-# Send urgent broadcast
-./emergency-broadcast.sh --urgent "Emergency message"
-
-# Check who's online
 ./mesh-rollcall.sh
 ```
 
-### Infrastructure Monitoring
+Monitor critical infrastructure:
+```bash
+./node-health-alert.py --nodes !6984a7c8 !b2a70de4
+```
+
+## Background Execution
+
+For continuous monitoring, run scripts in tmux, screen, or as background processes:
 
 ```bash
-# Monitor critical routers/repeaters
-./node-health-alert.py --nodes !1152513c !42e9fe6f --interval 300
+tmux new -s monitor './mesh-monitor.py'
+nohup ./message-logger.py > /dev/null 2>&1 &
 ```
 
-## Advanced Usage
+## Automation
 
-### Running in Background (tmux/screen)
+Scripts can be scheduled via cron for periodic execution:
 
 ```bash
-# Start logger in tmux
-tmux new -s logger './message-logger.py'
+# Backup configurations daily at 2 AM
+0 2 * * * /path/to/backup-all-radios.sh
 
-# Start health monitor in background
-nohup ./node-health-alert.py --nodes !6984a7c8 &
+# Network health check every 6 hours
+0 */6 * * * /path/to/mesh-rollcall.sh
 ```
-
-### Automation with Cron
-
-```bash
-# Backup daily at 2 AM
-0 2 * * * /home/user/repos/meshtastic-scripts/backup-all-radios.sh
-
-# Roll call every 6 hours
-0 */6 * * * /home/user/repos/meshtastic-scripts/mesh-rollcall.sh > /tmp/rollcall.log
-```
-
-## Output Examples
-
-### Mesh Monitor
-```
-════════════════════════════════════════════════════════════════════════════════
-MESHTASTIC MESH MONITOR - 2026-01-11 11:30:45
-════════════════════════════════════════════════════════════════════════════════
-
-📊 MESH STATISTICS
-  Total Nodes: 36
-  Monitor Uptime: 0h 5m
-  Nodes with SNR data: 28
-
-📡 ACTIVE NODES
-NODE ID      NAME                      SNR      HOPS   BATTERY  LAST HEARD
-────────────────────────────────────────────────────────────────────────────────
-!6984a7c8    CITADEL Mesh Client       ✓ 7.5dB  0      101%     1768130000
-!b2a70de4    Meshtastic Rome           ✓ 6.2dB  0      N/A      1767911163
-!42e9fe6f    W9BCI Brown Co Mesh-5     ~ 2.1dB  1      91%      1768000212
-```
-
-### Roll Call
-```
-═══════════════════════════════════════════════════════════
-  MESH NETWORK ROLL CALL
-═══════════════════════════════════════════════════════════
-
-NODE ID         NAME                           STATUS
-─────────────────────────────────────────────────────────────
-!6984a7c8       CITADEL Mesh Client            ✓ Responded
-!b2a70de4       Meshtastic Rome                ✓ Responded
-!42e9fe6f       W9BCI Brown Co Mesh-5          ✗ No response
-
-═══════════════════════════════════════════════════════════
-  ROLL CALL SUMMARY
-═══════════════════════════════════════════════════════════
-Total Nodes:     36
-Responded:       28
-No Response:     8
-Response Rate:   77.8%
-```
-
-## Troubleshooting
-
-### Permission Denied
-Ensure you're in the `dialout` group:
-```bash
-sudo usermod -a -G dialout $USER
-newgrp dialout
-```
-
-### Device Not Found
-Verify radio is attached to WSL2:
-```bash
-lsusb
-ls -l /dev/ttyACM*
-```
-
-### Script Won't Execute
-Make scripts executable:
-```bash
-chmod +x script-name.sh
-```
-
-## Contributing
-
-Contributions welcome! Feel free to:
-- Add new scripts
-- Improve existing functionality
-- Report bugs or suggest features
-- Share your automation ideas
-
-## Future Enhancements
-
-Planned features:
-- Web dashboard with real-time visualization
-- Discord/Slack integration for alerts
-- SQLite database for historical data
-- MQTT bridge support
-- GPS tracking and mapping
-- Automated firmware updates
-- Network topology visualization
 
 ## License
 
-MIT License - feel free to use and modify as needed.
+MIT License
 
 ## Resources
 
-- [Meshtastic Documentation](https://meshtastic.org/docs/)
-- [Meshtastic Python CLI](https://github.com/meshtastic/python)
-- [WSL2 Setup Guide](~/documentation/meshtastic/MESHTASTIC_WSL2_SETUP.md)
-- [CLI Cheat Sheet](~/documentation/meshtastic/MESHTASTIC_CLI_CHEATSHEET.txt)
-
-## Author
-
-Created for the Meshtastic community. Happy meshing! 📡
+- Meshtastic Documentation: https://meshtastic.org/docs/
+- Meshtastic Python CLI: https://github.com/meshtastic/python

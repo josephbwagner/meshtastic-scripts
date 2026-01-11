@@ -12,15 +12,44 @@ NC='\033[0m' # No Color
 
 # Usage
 usage() {
-    echo "Usage: $0 [OPTIONS] \"MESSAGE\""
-    echo ""
-    echo "Options:"
-    echo "  --port PORT    Serial port (e.g., /dev/ttyACM0)"
-    echo "  --ack          Wait for acknowledgment"
-    echo "  --urgent       Add URGENT prefix"
-    echo ""
-    echo "Example:"
-    echo "  $0 --urgent \"Emergency meeting at 1500h\""
+    cat << 'EOF'
+Meshtastic Emergency Broadcast System
+
+USAGE:
+  emergency-broadcast.sh [OPTIONS] "MESSAGE"
+
+OPTIONS:
+  --port DEVICE     Serial port (e.g., /dev/ttyACM0)
+                    Auto-detects if not specified
+  
+  --ack             Wait for message acknowledgment from nodes
+  
+  --urgent          Prepend [URGENT] prefix to message
+  
+  -h, --help        Display this help message
+
+DESCRIPTION:
+  Broadcasts a message to all nodes in the mesh network (destination: ^all).
+  Includes interactive confirmation prompt before transmission to prevent
+  accidental broadcasts.
+
+EXAMPLES:
+  emergency-broadcast.sh "Meeting at 1500h"
+    Simple broadcast to all nodes
+  
+  emergency-broadcast.sh --urgent "Emergency evacuation"
+    Urgent broadcast with priority prefix
+  
+  emergency-broadcast.sh --ack --port /dev/ttyACM0 "Check in required"
+    Broadcast with acknowledgment on specific radio
+
+NOTES:
+  - Always confirms before sending to prevent mistakes
+  - Messages broadcast to ^all destination (all mesh nodes)
+  - Urgent flag adds [URGENT] prefix for operator attention
+  - Acknowledgment flag waits for node responses (slower)
+
+EOF
     exit 1
 }
 

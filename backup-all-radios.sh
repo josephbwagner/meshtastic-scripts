@@ -14,6 +14,63 @@ RED='\033[0;31m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
+# Usage
+if [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
+    cat << 'EOF'
+Meshtastic Radio Backup Utility
+
+USAGE:
+  backup-all-radios.sh [OPTIONS]
+
+OPTIONS:
+  -h, --help        Display this help message
+
+DESCRIPTION:
+  Automatically backs up configuration from all connected Meshtastic devices.
+  Detects all serial devices, connects to each radio, and exports complete
+  configuration to timestamped YAML files.
+
+BACKUP LOCATION:
+  Default: ~/meshtastic-backups/
+
+FILENAME FORMAT:
+  backup-NODENAME-YYYYMMDD-HHMMSS.yaml
+  Example: backup-CITADEL_Mesh_Client-20260111-113045.yaml
+
+PROCESS:
+  1. Scans for all /dev/ttyACM* and /dev/ttyUSB* devices
+  2. Connects to each device and retrieves node information
+  3. Exports complete configuration including:
+     - Device settings and preferences
+     - LoRa radio configuration
+     - Channel definitions and encryption keys
+     - Module settings
+     - Position and owner information
+  4. Saves to timestamped file with node name
+
+OUTPUT:
+  - Summary of devices found and backed up
+  - Success/failure status per device
+  - Backup file locations and sizes
+  - List of recent backups
+
+EXAMPLES:
+  backup-all-radios.sh
+    Backup all connected radios
+  
+  crontab: 0 2 * * * /path/to/backup-all-radios.sh
+    Schedule daily backups at 2 AM
+
+NOTES:
+  - Requires radios to be connected and attached to WSL2
+  - Backup files contain sensitive data (encryption keys)
+  - Keep backups secure and private
+  - Use for disaster recovery or device replacement
+
+EOF
+    exit 0
+fi
+
 echo "═══════════════════════════════════════════════════════════"
 echo "  MESHTASTIC RADIO BACKUP UTILITY"
 echo "═══════════════════════════════════════════════════════════"

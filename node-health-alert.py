@@ -150,14 +150,57 @@ class NodeHealthMonitor:
             sys.exit(0)
 
 def main():
-    parser = argparse.ArgumentParser(description="Monitor critical Meshtastic nodes")
-    parser.add_argument("--port", help="Serial port (e.g., /dev/ttyACM0)")
-    parser.add_argument("--nodes", nargs='+', required=True,
-                       help="Node IDs to monitor (e.g., !6984a7c8 !b2a70de4)")
-    parser.add_argument("--interval", type=int, default=300,
-                       help="Check interval in seconds (default: 300)")
-    parser.add_argument("--battery-threshold", type=int, default=20,
-                       help="Battery alert threshold percentage (default: 20)")
+    parser = argparse.ArgumentParser(
+        description="Meshtastic Node Health Monitor and Alerter",
+        epilog="""
+Examples:
+  %(prog)s --nodes !6984a7c8 !b2a70de4
+    Monitor two critical nodes with default settings
+  
+  %(prog)s --nodes !1152513c --interval 600 --battery-threshold 25
+    Check every 10 minutes, alert if battery below 25%%
+  
+  %(prog)s --port /dev/ttyACM0 --nodes !6984a7c8 !b2a70de4 !42e9fe6f
+    Monitor three nodes on specific radio
+
+Alert conditions:
+  - Node goes offline (not in node list)
+  - Battery level drops below threshold (default: 20%%)
+  - Signal quality degrades (SNR < -10dB)
+
+Rate limiting: Maximum one alert per hour per issue to prevent spam.
+
+This script runs continuously until interrupted with Ctrl+C.
+Recommended to run in tmux/screen for persistent monitoring.
+        """,
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    parser.add_argument(
+        "--port",
+        metavar="DEVICE",
+        help="serial port to connect to (e.g., /dev/ttyACM0). Auto-detects if not specified."
+    )
+    parser.add_argument(
+        "--nodes",
+        nargs='+',
+        required=True,
+        metavar="NODEID",
+        help="node IDs to monitor (e.g., !6984a7c8 !b2a70de4). Use format with ! prefix."
+    )
+    parser.add_argument(
+        "--interval",
+        type=int,
+        default=300,
+        metavar="SECONDS",
+        help="check interval in seconds (default: 300 = 5 minutes)"
+    )
+    parser.add_argument(
+        "--battery-threshold",
+        type=int,
+        default=20,
+        metavar="PERCENT",
+        help="battery level to trigger alert, 0-100 (default: 20)"
+    )
     
     args = parser.parse_args()
     

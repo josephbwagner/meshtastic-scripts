@@ -131,8 +131,34 @@ class MeshMonitor:
 
 def main():
     import argparse
-    parser = argparse.ArgumentParser(description="Monitor Meshtastic mesh network")
-    parser.add_argument("--port", help="Serial port (e.g., /dev/ttyACM0)")
+    parser = argparse.ArgumentParser(
+        description="Meshtastic Mesh Network Monitor",
+        epilog="""
+Examples:
+  %(prog)s
+    Auto-detect radio and display live dashboard
+  
+  %(prog)s --port /dev/ttyACM0
+    Monitor specific radio on /dev/ttyACM0
+  
+  %(prog)s --port /dev/serial/by-id/usb-Heltec_...
+    Use persistent device identifier
+
+Dashboard displays:
+  - Total node count and network statistics
+  - Node-by-node details including SNR, battery, and hop count
+  - Signal quality indicators (good/moderate/poor)
+  - Real-time updates every 30 seconds
+
+Press Ctrl+C to exit the monitor.
+        """,
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    parser.add_argument(
+        "--port",
+        metavar="DEVICE",
+        help="serial port to connect to (e.g., /dev/ttyACM0). If not specified, will auto-detect."
+    )
     args = parser.parse_args()
     
     monitor = MeshMonitor(port=args.port)

@@ -14,6 +14,53 @@ RED='\033[0;31m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
+# Usage
+if [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
+    cat << 'EOF'
+Meshtastic Network Roll Call
+
+USAGE:
+  mesh-rollcall.sh [OPTIONS]
+
+OPTIONS:
+  --port DEVICE     Serial port (e.g., /dev/ttyACM0)
+                    Auto-detects if not specified
+  
+  -h, --help        Display this help message
+
+DESCRIPTION:
+  Performs a network health check by requesting telemetry from all known
+  nodes in the mesh database. Reports which nodes respond and calculates
+  overall network response rate.
+
+PROCESS:
+  1. Fetches complete node list from local database
+  2. Requests telemetry from each node sequentially
+  3. Records response/no-response status for each node
+  4. Generates summary report with statistics
+
+OUTPUT:
+  - Per-node status (responded or no response)
+  - Node names and identifiers
+  - Total count and response rate percentage
+
+EXAMPLES:
+  mesh-rollcall.sh
+    Run roll call on auto-detected radio
+  
+  mesh-rollcall.sh --port /dev/ttyACM0
+    Run on specific radio device
+
+NOTES:
+  - Takes time to complete (2 seconds per node)
+  - Non-responsive nodes may be offline, out of range, or powered down
+  - Network conditions can affect response rates
+  - Recommended to run during quiet periods for accurate results
+
+EOF
+    exit 0
+fi
+
 echo "═══════════════════════════════════════════════════════════"
 echo "  MESH NETWORK ROLL CALL"
 echo "═══════════════════════════════════════════════════════════"
